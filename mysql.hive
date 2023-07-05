@@ -1,0 +1,147 @@
+create table if not exists app_didi.t_order_subscribe_percent
+(
+    date_val     date,
+    subscribe_name varchar(20),
+    percent_val varchar(20)
+);
+
+#创建不同时段订单统计目标表
+create table if not exists app_didi.t_order_timerange_total
+(
+    order_date date,
+    timerange  varchar(20),
+    count      int
+);
+
+#创建不同地域订单统计目标表
+create table if not exists app_didi.t_order_province_total
+(
+    order_date date,
+    province   varchar(20),
+    count      int
+);
+--
+create  table if not exists app_didi.t_order_profession_total_topn(
+    profession varchar(20),
+    order_cnt int,
+    rk int
+);
+/export/server/sqoop-1.4.6/bin/sqoop export \
+--connect jdbc:mysql://192.168.52.161:3306/app_didi \
+--username root \
+--password 123456 \
+--table t_order_profession_total_topn \
+--export-dir /user/hive/warehouse/app_didi.db/t_order_profession_total_topn/month=2020-04;
+--
+create table if not exists app_didi.t_order_cancel_order_percent
+(
+    datetime             string comment '日期',
+    cancel_order_percent string comment '百分比'
+)
+create table if not exists app_didi.t_order_cancel_order_percent(
+        datatime varchar(20),
+        cancel_order_percent varchar(20)
+);
+
+create table if not exists app_didi.t_detail
+(
+    datetime varchar(20) comment '日期',
+    province varchar(20) comment '省份',
+    count    int comment '订单数量',
+    lng varchar(50) comment '经度' ,
+    lat varchar(50) comment '纬度'
+);
+/export/server/sqoop-1.4.6/bin/sqoop export \
+--connect jdbc:mysql://192.168.52.161:3306/app_didi \
+--username root \
+--password 123456 \
+--table t_detail \
+--export-dir /user/hive/warehouse/app_didi.db/t_detail/month=2020-04;
+
+#创建不同年龄段，不同时段订单目标表
+create table if not exists app_didi.t_order_age_and_time_range_total
+(
+    order_date       date,
+    age_range        varchar(20),
+    order_time_range varchar(20),
+    count            int
+);
+
+
+/export/server/sqoop-1.4.6/bin/sqoop export \
+--connect jdbc:mysql://192.168.52.161:3306/app_didi \
+--username root \
+--password 123456 \
+--table t_order_subscribe_percent \
+--export-dir /user/hive/warehouse/app_didi.db/t_order_subscribe_percent/month=2020-04;
+
+
+/export/server/sqoop-1.4.6/bin/sqoop export \
+--connect jdbc:mysql://192.168.52.161:3306/app_didi \
+--username root \
+--password 123456 \
+--table t_order_timerange_total \
+--export-dir /user/hive/warehouse/app_didi.db/t_order_timerange_total/month=2020-04
+
+/export/server/sqoop-1.4.6/bin/sqoop export \
+--connect jdbc:mysql://192.168.52.161:3306/app_didi \
+--username root \
+--password 123456 \
+--table t_order_province_total  \
+--export-dir /user/hive/warehouse/app_didi.db/t_order_province_total/month=2020-04
+
+/export/server/sqoop-1.4.6/bin/sqoop export \
+--connect jdbc:mysql://192.168.52.161:3306/app_didi \
+--username root \
+--password 123456 \
+--table t_order_age_and_time_range_total  \
+--export-dir /user/hive/warehouse/app_didi.db/t_order_age_and_time_range_total/month=2020-04
+create table if not exists app_didi.t_order_cancel_reason
+(
+    profession varchar(20) comment '职业',
+    cancel_cnt  int comment '订单数量',
+    rk         int comment '排名'
+);
+/export/server/sqoop-1.4.6/bin/sqoop export \
+--connect jdbc:mysql://192.168.52.161:3306/app_didi \
+--username root \
+--password 123456 \
+--table t_order_cancel_reason  \
+--export-dir /user/hive/warehouse/app_didi.db/t_order_cancel_reason/month=2020-04
+
+create table if not exists app_didi.t_order_city
+(
+    city varchar(20) comment '城市',
+    order_cnt  int comment '订单数量',
+    rk         int comment '排名'
+);
+/export/server/sqoop-1.4.6/bin/sqoop export \
+--connect jdbc:mysql://192.168.52.161:3306/app_didi \
+--username root \
+--password 123456 \
+--table t_order_city  \
+--export-dir /user/hive/warehouse/app_didi.db/t_order_city/month=2020-04
+
+create table if not exists app_didi.t_order_dicount
+(
+    isdicount varchar(20) comment '是否使用优惠券',
+    order_cnt  varchar(20)comment '百分比'
+);
+/export/server/sqoop-1.4.6/bin/sqoop export \
+--connect jdbc:mysql://192.168.52.161:3306/app_didi \
+--username root \
+--password 123456 \
+--table t_order_dicount \
+--export-dir /user/hive/warehouse/app_didi.db/t_order_dicount/month=2020-04
+
+create table if not exists app_didi.t_order_five_start
+(
+    fivestart varchar(20) comment '是否是5',
+    order_cnt  varchar(20) comment '百分比'
+);
+/export/server/sqoop-1.4.6/bin/sqoop export \
+--connect jdbc:mysql://192.168.52.161:3306/app_didi \
+--username root \
+--password 123456 \
+--table t_order_five_start \
+--export-dir /user/hive/warehouse/app_didi.db/t_order_five_start/month=2020-04
